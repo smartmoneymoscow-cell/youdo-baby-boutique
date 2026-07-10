@@ -61,8 +61,8 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-hero" />
-      <div className="absolute -top-32 -right-24 size-[520px] rounded-full bg-accent/60 blur-3xl opacity-70" />
-      <div className="absolute -bottom-40 -left-24 size-[420px] rounded-full bg-cream blur-3xl opacity-70" />
+      <div className="pointer-events-none absolute -top-40 -right-40 size-[560px] rounded-full bg-sky/50 blur-[100px]" />
+      <div className="pointer-events-none absolute -bottom-40 -left-40 size-[480px] rounded-full bg-blush/40 blur-[100px]" />
 
       <div className="relative px-4 md:px-6 lg:px-10 pt-6 pb-14 md:pt-10 md:pb-24">
         <div className="mx-auto max-w-7xl grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-14 items-center">

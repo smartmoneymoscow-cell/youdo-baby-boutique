@@ -70,9 +70,9 @@
   --accent: oklch(0.92 0.05 235);
   --accent-foreground: oklch(0.32 0.11 260);
 
-  --cream: oklch(0.955 0.028 70);
-  --sky: oklch(0.94 0.04 235);
-  --blush: oklch(0.93 0.04 25);
+  --cream: oklch(0.955 0.03 60);
+  --sky: oklch(0.93 0.05 235);
+  --blush: oklch(0.92 0.045 25);
 
   --destructive: oklch(0.62 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
