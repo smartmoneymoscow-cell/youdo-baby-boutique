@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Заказ с YouDo — премиум магазин детских товаров" },
       {
         property: "og:description",
-        content: "5 000+ товаров для детей. Оптовые цены, ИИ-консультант, быстрая доставка.",
+        content: "Премиальный B2B/B2C магазин детских товаров: коляски, кроватки, игрушки, одежда. 5 000+ SKU, оптовые цены, ИИ-консультант и доставка по России.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

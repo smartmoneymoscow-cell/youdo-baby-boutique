@@ -83,6 +83,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Премиальный B2B/B2C магазин детских товаров: коляски, кроватки, игрушки, одежда. 5 000+ SKU, оптовые цены, ИИ-консультант и доставка по России.",
       },
+      { property: "og:title", content: "Заказ с YouDo — премиум магазин детских товаров" },
+      { name: "twitter:title", content: "Заказ с YouDo — премиум магазин детских товаров" },
+      { property: "og:description", content: "Премиальный B2B/B2C магазин детских товаров: коляски, кроватки, игрушки, одежда. 5 000+ SKU, оптовые цены, ИИ-консультант и доставка по России." },
+      { name: "twitter:description", content: "Премиальный B2B/B2C магазин детских товаров: коляски, кроватки, игрушки, одежда. 5 000+ SKU, оптовые цены, ИИ-консультант и доставка по России." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8ef66c02-a495-4919-921c-fa5d84c3fdbb/id-preview-37e9ae69--242e7d34-685e-4e8e-b529-b34ef513dc6d.lovable.app-1783705955374.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8ef66c02-a495-4919-921c-fa5d84c3fdbb/id-preview-37e9ae69--242e7d34-685e-4e8e-b529-b34ef513dc6d.lovable.app-1783705955374.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
