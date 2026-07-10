@@ -81,7 +81,7 @@
   --input: oklch(0.92 0.015 245);
   --ring: oklch(0.55 0.16 255);
 
-  --gradient-hero: linear-gradient(135deg, oklch(0.96 0.035 240) 0%, oklch(0.94 0.05 230) 45%, oklch(0.965 0.025 70) 100%);
+  --gradient-hero: linear-gradient(135deg in oklab, #eaf1fa 0%, #d9e8f6 45%, #f6ecd8 100%);
   --gradient-primary: linear-gradient(135deg, oklch(0.35 0.12 262), oklch(0.48 0.16 258));
   --gradient-soft: linear-gradient(180deg, oklch(0.98 0.015 240) 0%, oklch(0.94 0.04 235) 100%);
 }
