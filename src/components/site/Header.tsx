@@ -48,41 +48,36 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-4 lg:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20">
-          <button className="lg:hidden text-foreground shrink-0" aria-label="Меню" onClick={() => setMobileNav(true)}>
-            <Menu className="size-6" />
-          </button>
+        {/* Desktop header — 3-column grid: logo+nav | search | actions */}
+        <div className="hidden lg:grid items-center grid-cols-[auto_1fr_auto] gap-6 px-10 h-20">
+          <div className="flex items-center gap-6">
+            <Link to="/" className="shrink-0">
+              <Logo size={40} />
+            </Link>
+            <nav className="flex items-center gap-6 text-sm font-medium text-foreground/80">
+              {navLinks.map((l) =>
+                l.hash ? (
+                  <a key={l.label} href={l.hash} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</a>
+                ) : (
+                  <Link key={l.label} to={l.to} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</Link>
+                ),
+              )}
+            </nav>
+          </div>
 
-          <Link to="/" className="hidden lg:block">
-            <Logo size={40} />
-          </Link>
-          <Link to="/" className="shrink-0 lg:hidden">
-            <Logo size={36} showText={false} />
-          </Link>
-
-          <nav className="hidden lg:flex items-center gap-6 ml-3 text-sm font-medium text-foreground/80 shrink-0">
-            {navLinks.map((l) =>
-              l.hash ? (
-                <a key={l.label} href={l.hash} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</a>
-              ) : (
-                <Link key={l.label} to={l.to} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</Link>
-              ),
-            )}
-          </nav>
-
-          <div className="hidden md:flex flex-1 min-w-0">
-            <Link to="/catalog" className="relative w-full">
+          <div className="min-w-0">
+            <Link to="/catalog" className="relative block">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <div className="w-full h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
+              <div className="w-full max-w-xl mx-auto h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
                 Найти коляску, кроватку, игрушку…
               </div>
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2 shrink-0">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setFavOpen(true)}
-              className="relative size-10 md:size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
+              className="relative size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
               aria-label="Избранное"
             >
               <Heart className="size-5 text-foreground" />
@@ -96,7 +91,7 @@ export function Header() {
             <button
               id="cart-button"
               onClick={() => setCartOpen(true)}
-              className="relative size-10 md:size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
+              className="relative size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
               aria-label="Корзина"
             >
               <AnimatePresence mode="wait">
@@ -120,6 +115,47 @@ export function Header() {
               )}
             </button>
 
+            <div className="shrink-0">
+              <UserMenu onOpenLogin={() => setLoginOpen(true)} />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile header — simple flex */}
+        <div className="flex lg:hidden items-center gap-3 px-4 h-16">
+          <button className="text-foreground shrink-0" aria-label="Меню" onClick={() => setMobileNav(true)}>
+            <Menu className="size-6" />
+          </button>
+          <Link to="/" className="shrink-0">
+            <Logo size={36} showText={false} />
+          </Link>
+          <div className="flex-1" />
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setFavOpen(true)}
+              className="relative size-10 grid place-items-center rounded-full hover:bg-secondary transition-colors"
+              aria-label="Избранное"
+            >
+              <Heart className="size-5 text-foreground" />
+              {favorites.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 size-5 rounded-full bg-blush text-primary text-[10px] font-bold grid place-items-center border-2 border-background">
+                  {favorites.length}
+                </span>
+              )}
+            </button>
+            <button
+              id="cart-button-mobile"
+              onClick={() => setCartOpen(true)}
+              className="relative size-10 grid place-items-center rounded-full hover:bg-secondary transition-colors"
+              aria-label="Корзина"
+            >
+              <ShoppingBag className="size-5 text-foreground" />
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold grid place-items-center border-2 border-background">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             <div className="shrink-0">
               <UserMenu onOpenLogin={() => setLoginOpen(true)} />
             </div>
