@@ -44,10 +44,10 @@ export function Logo({ size = 40, showText = true }: { size?: number; showText?:
       </svg>
       {showText && (
         <div className="leading-tight min-w-0 overflow-hidden">
-          <div className="text-[15px] md:text-[17px] font-extrabold text-primary tracking-tight truncate">
+          <div className="text-[14px] md:text-[15px] font-extrabold text-primary tracking-tight truncate">
             Заказ с <span className="font-serif italic font-medium text-primary-soft">YouDo</span>
           </div>
-          <div className="hidden md:block text-[9px] uppercase tracking-[0.22em] text-muted-foreground truncate">
+          <div className="hidden lg:block text-[9px] uppercase tracking-[0.2em] text-muted-foreground truncate">
             Premium baby boutique
           </div>
         </div>

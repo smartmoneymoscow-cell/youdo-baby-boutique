@@ -48,7 +48,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20 overflow-hidden">
+        <div className="flex items-center gap-3 md:gap-4 lg:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20">
           <button className="lg:hidden text-foreground shrink-0" aria-label="Меню" onClick={() => setMobileNav(true)}>
             <Menu className="size-6" />
           </button>
@@ -60,7 +60,7 @@ export function Header() {
             <Logo size={36} showText={false} />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7 ml-4 text-sm font-medium text-foreground/80 shrink-0">
+          <nav className="hidden lg:flex items-center gap-6 ml-3 text-sm font-medium text-foreground/80 shrink-0">
             {navLinks.map((l) =>
               l.hash ? (
                 <a key={l.label} href={l.hash} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</a>
@@ -70,7 +70,7 @@ export function Header() {
             )}
           </nav>
 
-          <div className="hidden md:flex flex-1 min-w-0 overflow-hidden">
+          <div className="hidden md:flex flex-1 min-w-0">
             <Link to="/catalog" className="relative w-full">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
               <div className="w-full h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
@@ -79,7 +79,7 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2 justify-end shrink-0">
+          <div className="flex items-center gap-1 md:gap-2 shrink-0">
             <button
               onClick={() => setFavOpen(true)}
               className="relative size-10 md:size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
