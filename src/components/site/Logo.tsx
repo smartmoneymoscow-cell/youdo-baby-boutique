@@ -1,6 +1,6 @@
 export function Logo({ size = 40, showText = true }: { size?: number; showText?: boolean }) {
   return (
-    <div className="flex items-center gap-2.5 shrink-0">
+    <div className="flex items-center gap-2.5 min-w-0">
       <svg
         width={size}
         height={size}
@@ -43,11 +43,11 @@ export function Logo({ size = 40, showText = true }: { size?: number; showText?:
         <path d="M46 48 L52 46 L52 50 Z" fill="#d29aab" />
       </svg>
       {showText && (
-        <div className="leading-tight">
-          <div className="text-[15px] md:text-[17px] font-extrabold text-primary tracking-tight">
+        <div className="leading-tight min-w-0 overflow-hidden">
+          <div className="text-[15px] md:text-[17px] font-extrabold text-primary tracking-tight truncate">
             Заказ с <span className="font-serif italic font-medium text-primary-soft">YouDo</span>
           </div>
-          <div className="hidden md:block text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
+          <div className="hidden md:block text-[9px] uppercase tracking-[0.22em] text-muted-foreground truncate">
             Premium baby boutique
           </div>
         </div>

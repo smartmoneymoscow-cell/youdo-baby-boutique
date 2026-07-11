@@ -48,12 +48,12 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20">
+        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20 overflow-hidden">
           <button className="lg:hidden text-foreground shrink-0" aria-label="Меню" onClick={() => setMobileNav(true)}>
             <Menu className="size-6" />
           </button>
 
-          <Link to="/" className="shrink-0 hidden lg:block">
+          <Link to="/" className="hidden lg:block">
             <Logo size={40} />
           </Link>
           <Link to="/" className="shrink-0 lg:hidden">
@@ -70,7 +70,7 @@ export function Header() {
             )}
           </nav>
 
-          <div className="hidden md:flex flex-1 min-w-0 max-w-xl mx-auto">
+          <div className="hidden md:flex flex-1 min-w-0 overflow-hidden">
             <Link to="/catalog" className="relative w-full">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
               <div className="w-full h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
