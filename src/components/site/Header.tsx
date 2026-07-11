@@ -49,7 +49,7 @@ export function Header() {
         </div>
 
         {/* Desktop header — 3-column grid: logo+nav | search | actions */}
-        <div className="hidden lg:grid items-center grid-cols-[auto_1fr_auto] gap-6 px-10 h-20">
+        <div style={{ display: 'none' }} className="lg:!grid items-center grid-cols-[auto_1fr_auto] gap-6 px-10 h-20">
           <div className="flex items-center gap-6">
             <Link to="/" className="shrink-0">
               <Logo size={40} />
