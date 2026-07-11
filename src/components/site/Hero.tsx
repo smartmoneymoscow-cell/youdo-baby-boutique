@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, Sparkles, Truck, ShieldCheck, HeartHandshake } from "lucide-react";
 import heroFamily from "@/assets/hero-family.jpg";
@@ -13,10 +14,10 @@ const slides = [
     title: "Премиум-товары",
     accent: "для счастливого детства",
     subtitle:
-      "Кроватки, коляски, игрушки и одежда от лучших мировых брендов. Оптовые цены для магазинов и садиков.",
+      "Кроватки, коляски, игрушки и одежда от лучших мировых брендов. Более 5 000 позиций с быстрой доставкой по России.",
     image: heroFamily,
     cta: "Открыть каталог",
-    href: "#catalog",
+    to: "/catalog" as const,
   },
   {
     tag: "Хит недели",
@@ -26,7 +27,7 @@ const slides = [
       "Алюминиевая рама, амортизация нового поколения, складывается одной рукой. −18% до конца недели.",
     image: stroller,
     cta: "Смотреть коляски",
-    href: "#catalog",
+    to: "/catalog" as const,
   },
   {
     tag: "Montessori",
@@ -36,7 +37,7 @@ const slides = [
       "Безопасные материалы, ручная работа, сертифицированные пигменты. От первых месяцев до 6 лет.",
     image: stacker,
     cta: "К игрушкам",
-    href: "#catalog",
+    to: "/catalog" as const,
   },
   {
     tag: "Petit Ourson",
@@ -46,9 +47,17 @@ const slides = [
       "Плюшевые мишки ручной работы из органического хлопка. Гипоаллергенный наполнитель.",
     image: bear,
     cta: "Выбрать друга",
-    href: "#catalog",
+    to: "/catalog" as const,
   },
 ];
+
+// Preload all hero images so slider swaps are instant and don't cause layout shifts.
+if (typeof window !== "undefined") {
+  slides.forEach((s) => {
+    const img = new Image();
+    img.src = s.image;
+  });
+}
 
 export function Hero() {
   const [i, setI] = useState(0);
@@ -66,7 +75,8 @@ export function Hero() {
 
       <div className="relative px-4 md:px-6 lg:px-10 pt-6 pb-14 md:pt-10 md:pb-24">
         <div className="mx-auto max-w-7xl grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-14 items-center">
-          <div className="order-2 lg:order-1">
+          {/* TEXT COLUMN — fixed min-height to keep hero from jumping between slides */}
+          <div className="order-2 lg:order-1 min-h-[420px] md:min-h-[460px] lg:min-h-[520px] flex flex-col">
             <AnimatePresence mode="wait">
               <motion.div
                 key={i}
@@ -74,6 +84,7 @@ export function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.5 }}
+                className="flex-1"
               >
                 <div className="inline-flex items-center gap-2 rounded-full bg-background/70 backdrop-blur-md border border-border px-3.5 py-1.5 text-xs font-semibold text-primary shadow-sm">
                   <Sparkles className="size-3.5" /> {s.tag}
@@ -87,28 +98,30 @@ export function Hero() {
                 <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
                   {s.subtitle}
                 </p>
+
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="h-14 px-7 rounded-full bg-gradient-primary text-base font-semibold shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all"
+                  >
+                    <Link to={s.to}>
+                      {s.cta} <ArrowRight className="ml-1 size-5" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="h-14 px-7 rounded-full bg-background/60 backdrop-blur-md text-base font-semibold border-border/80 hover:bg-background"
+                  >
+                    <a href="#bestsellers">Бестселлеры</a>
+                  </Button>
+                </div>
               </motion.div>
             </AnimatePresence>
 
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="h-14 px-7 rounded-full bg-gradient-primary text-base font-semibold shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all"
-              >
-                <a href={s.href}>{s.cta} <ArrowRight className="ml-1 size-5" /></a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="h-14 px-7 rounded-full bg-background/60 backdrop-blur-md text-base font-semibold border-border/80 hover:bg-background"
-              >
-                <a href="#wholesale">Оптовые цены</a>
-              </Button>
-            </div>
-
-            <div className="mt-10 flex gap-2 items-center">
+            <div className="mt-8 flex gap-2 items-center">
               {slides.map((_, idx) => (
                 <button
                   key={idx}
@@ -121,23 +134,25 @@ export function Hero() {
               ))}
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-3 md:gap-5 max-w-md">
+            <div className="mt-6 grid grid-cols-3 gap-3 md:gap-5 max-w-md">
               <Feature icon={Truck} label="Быстрая доставка" />
               <Feature icon={ShieldCheck} label="Оригинал 100%" />
               <Feature icon={HeartHandshake} label="Забота о семье" />
             </div>
           </div>
 
+          {/* IMAGE COLUMN — fixed square aspect so it never shifts height */}
           <div className="order-1 lg:order-2 relative">
-            <div className="relative aspect-[4/5] md:aspect-square max-w-[560px] mx-auto">
+            <div className="relative w-full max-w-[520px] mx-auto aspect-square">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={i}
                   src={s.image}
-                  initial={{ opacity: 0, scale: 0.94, rotate: -2 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.02 }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 size-full object-cover rounded-[42px] shadow-float border-8 border-background"
                 />
               </AnimatePresence>
