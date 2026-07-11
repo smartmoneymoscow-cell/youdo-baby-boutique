@@ -170,7 +170,7 @@ export function CartDrawer() {
             </div>
 
             {items.length > 0 && (
-              <div className="border-t border-border p-6 space-y-4 bg-gradient-soft">
+              <div className="border-t border-border p-6 space-y-3 bg-gradient-soft">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Промежуточный итог</span>
                   <span className="text-lg font-extrabold text-primary">{formatPrice(subtotal)}</span>
@@ -179,8 +179,15 @@ export function CartDrawer() {
                   <span>Доставка</span>
                   <span className="text-primary font-semibold">Бесплатно</span>
                 </div>
-                <button className="w-full h-13 py-3.5 rounded-full bg-gradient-primary text-primary-foreground font-semibold shadow-soft hover:shadow-float transition-all inline-flex items-center justify-center gap-2">
-                  Оформить заказ <ArrowRight className="size-4" />
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Бонусы за покупку</span>
+                  <span className="font-bold text-primary-soft">+{bonusesEarned} ₽</span>
+                </div>
+                <button
+                  onClick={checkout}
+                  className="w-full h-13 py-3.5 rounded-full bg-gradient-primary text-primary-foreground font-semibold shadow-soft hover:shadow-float transition-all inline-flex items-center justify-center gap-2"
+                >
+                  {user ? "Оформить заказ" : "Войдите, чтобы оформить"} <ArrowRight className="size-4" />
                 </button>
                 <div className="flex justify-between text-xs">
                   <button onClick={() => setCartOpen(false)} className="text-muted-foreground hover:text-primary underline underline-offset-2">
