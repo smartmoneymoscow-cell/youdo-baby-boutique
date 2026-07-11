@@ -7,17 +7,21 @@ import bottle from "@/assets/product-bottle.jpg";
 import blocks from "@/assets/product-blocks.jpg";
 import blanket from "@/assets/product-blanket.jpg";
 
+export type Category = "Коляски" | "Мебель" | "Игрушки" | "Одежда" | "Питание" | "Текстиль";
+export type AgeGroup = "0-6 мес" | "6-12 мес" | "1-3 года" | "3-6 лет";
+
 export type Product = {
   id: string;
   name: string;
   brand: string;
-  category: "Коляски" | "Мебель" | "Игрушки" | "Одежда" | "Питание" | "Текстиль";
-  ageGroup: "0-6 мес" | "6-12 мес" | "1-3 года" | "3-6 лет";
+  category: Category;
+  ageGroup: AgeGroup;
   price: number;
   oldPrice?: number;
   image: string;
   rating: number;
   reviews: number;
+  stock: number;
   isNew?: boolean;
   isBestseller?: boolean;
   description: string;
@@ -25,7 +29,7 @@ export type Product = {
   sizes?: string[];
 };
 
-export const PRODUCTS: Product[] = [
+const BASE: Product[] = [
   {
     id: "p1",
     name: "Прогулочная коляска Nordic Cloud",
@@ -37,6 +41,7 @@ export const PRODUCTS: Product[] = [
     image: stroller,
     rating: 4.9,
     reviews: 214,
+    stock: 34,
     isBestseller: true,
     description:
       "Прогулочная коляска премиум-класса с алюминиевой рамой, экокожей ручкой и амортизацией нового поколения. Компактно складывается одной рукой.",
@@ -56,6 +61,7 @@ export const PRODUCTS: Product[] = [
     image: crib,
     rating: 4.8,
     reviews: 128,
+    stock: 12,
     isNew: true,
     description:
       "Классическая кроватка из массива бука с ортопедическим основанием. Растёт вместе с ребёнком — трансформируется в подростковую кровать.",
@@ -74,6 +80,7 @@ export const PRODUCTS: Product[] = [
     image: bear,
     rating: 5.0,
     reviews: 512,
+    stock: 240,
     isBestseller: true,
     description:
       "Мягкий мишка ручной работы из органического хлопка с шёлковым бантом. Гипоаллергенный наполнитель, безопасен с рождения.",
@@ -94,6 +101,7 @@ export const PRODUCTS: Product[] = [
     image: stacker,
     rating: 4.9,
     reviews: 341,
+    stock: 88,
     description:
       "Развивающая пирамидка из бука с натуральными пигментами. Тренирует моторику, восприятие цвета и симметрии.",
     colors: [{ name: "Пастель", hex: "#f6d6b8" }],
@@ -108,6 +116,7 @@ export const PRODUCTS: Product[] = [
     image: clothes,
     rating: 4.7,
     reviews: 96,
+    stock: 156,
     isNew: true,
     description:
       "Комплект из 3 боди из 100% органического хлопка GOTS. Плоские швы, кнопки по всей длине — легко надевается.",
@@ -128,6 +137,7 @@ export const PRODUCTS: Product[] = [
     image: bottle,
     rating: 4.8,
     reviews: 187,
+    stock: 320,
     description:
       "Стеклянная бутылочка с силиконовой соской медленного потока и антиколиковой системой. Без BPA, выдерживает стерилизацию.",
     colors: [
@@ -146,6 +156,7 @@ export const PRODUCTS: Product[] = [
     image: blocks,
     rating: 4.9,
     reviews: 273,
+    stock: 42,
     isBestseller: true,
     description:
       "Классический деревянный конструктор-паровозик, окрашенный безопасными пигментами на водной основе. Развивает воображение.",
@@ -161,6 +172,7 @@ export const PRODUCTS: Product[] = [
     image: blanket,
     rating: 4.9,
     reviews: 152,
+    stock: 60,
     description:
       "Уютный вязаный плед из мериносовой шерсти с добавлением органического хлопка. Идеален для дома и прогулок.",
     colors: [
@@ -171,21 +183,89 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export const CATEGORIES: Product["category"][] = [
-  "Коляски",
-  "Мебель",
-  "Игрушки",
-  "Одежда",
-  "Питание",
-  "Текстиль",
-];
+export const CATEGORIES: Category[] = ["Коляски", "Мебель", "Игрушки", "Одежда", "Питание", "Текстиль"];
+export const AGE_GROUPS: AgeGroup[] = ["0-6 мес", "6-12 мес", "1-3 года", "3-6 лет"];
+export const BRANDS = ["YOUDO Premium", "YOUDO Essentials", "MAISON BABY", "Petit Ourson", "Wooden Lab", "PureFlow", "Nordic Nest", "Bébé Chic", "Little Cloud", "Aurora Kids"];
 
-export const AGE_GROUPS: Product["ageGroup"][] = [
-  "0-6 мес",
-  "6-12 мес",
-  "1-3 года",
-  "3-6 лет",
-];
+const NAME_PREFIX: Record<Category, string[]> = {
+  Коляски: ["Nordic", "Cloud", "Sky", "Air", "Urban", "Compact", "Grand"],
+  Мебель: ["Ivory", "Oak", "Nordic", "Provence", "Milano", "Petit"],
+  Игрушки: ["Rainbow", "Montessori", "Wooden", "Forest", "Little Bear", "Cosmo", "Étoile"],
+  Одежда: ["Organic", "Soft", "Baby", "Merino", "Cotton", "Milk", "Cloud"],
+  Питание: ["Pure", "Fresh", "Silicone", "Glass", "Nature"],
+  Текстиль: ["Cloud", "Knit", "Merino", "Dream", "Cozy", "Linen"],
+};
+const NAME_ITEM: Record<Category, string[]> = {
+  Коляски: ["коляска", "трансформер", "трость", "прогулка 2-в-1", "тревел-система"],
+  Мебель: ["кроватка", "комод", "пеленальный столик", "манеж", "стульчик"],
+  Игрушки: ["конструктор", "пирамидка", "игровой набор", "мишка", "каталка", "лабиринт", "паровозик"],
+  Одежда: ["комбинезон", "боди", "комплект", "костюмчик", "шапочка", "пижама"],
+  Питание: ["бутылочка", "соска", "поильник", "тарелка", "ложка"],
+  Текстиль: ["плед", "конверт", "спальный мешок", "полотенце", "простынь"],
+};
+
+// Deterministically build a large catalog (~200 items) reusing the 8 real images.
+function seededRandom(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+
+function generateExtras(): Product[] {
+  const rand = seededRandom(42);
+  const out: Product[] = [];
+  const images = [stroller, crib, bear, stacker, clothes, bottle, blocks, blanket];
+  const cats: Category[] = ["Коляски", "Мебель", "Игрушки", "Одежда", "Питание", "Текстиль"];
+  const catImg: Record<Category, string[]> = {
+    Коляски: [stroller],
+    Мебель: [crib],
+    Игрушки: [bear, stacker, blocks],
+    Одежда: [clothes],
+    Питание: [bottle],
+    Текстиль: [blanket],
+  };
+
+  for (let i = 0; i < 200; i++) {
+    const cat = cats[Math.floor(rand() * cats.length)];
+    const brand = BRANDS[Math.floor(rand() * BRANDS.length)];
+    const age = AGE_GROUPS[Math.floor(rand() * AGE_GROUPS.length)];
+    const prefix = NAME_PREFIX[cat][Math.floor(rand() * NAME_PREFIX[cat].length)];
+    const item = NAME_ITEM[cat][Math.floor(rand() * NAME_ITEM[cat].length)];
+    const suffix = ["Signature", "Premium", "Classic", "Essential", "Deluxe", "Kids", ""][Math.floor(rand() * 7)];
+    const name = `${item.charAt(0).toUpperCase() + item.slice(1)} ${prefix}${suffix ? ` ${suffix}` : ""}`;
+    const basePrice = [890, 1290, 1990, 2490, 3490, 4990, 6990, 9990, 14990, 24990, 39990, 59990, 89990][Math.floor(rand() * 13)];
+    const hasDiscount = rand() > 0.6;
+    const imgArr = catImg[cat] ?? images;
+    out.push({
+      id: `g${i + 1}`,
+      name,
+      brand,
+      category: cat,
+      ageGroup: age,
+      price: basePrice,
+      oldPrice: hasDiscount ? Math.round(basePrice * (1.15 + rand() * 0.35)) : undefined,
+      image: imgArr[Math.floor(rand() * imgArr.length)],
+      rating: Math.round((3.8 + rand() * 1.2) * 10) / 10,
+      reviews: Math.floor(rand() * 900) + 5,
+      stock: Math.floor(rand() * 300),
+      isNew: rand() > 0.85,
+      isBestseller: rand() > 0.88,
+      description:
+        "Премиальный товар из подборки Заказ с YouDo. Проверенное качество, безопасные материалы, оригинал от бренда.",
+      colors: [
+        { name: "Ваниль", hex: "#f3e7cf" },
+        { name: "Небесный", hex: "#c9dcef" },
+        { name: "Пудра", hex: "#e8ccc2" },
+      ].slice(0, 1 + Math.floor(rand() * 3)),
+      sizes: cat === "Одежда" ? ["56", "62", "68", "74", "80", "86"] : undefined,
+    });
+  }
+  return out;
+}
+
+export const PRODUCTS: Product[] = [...BASE, ...generateExtras()];
 
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(n) + " ₽";
