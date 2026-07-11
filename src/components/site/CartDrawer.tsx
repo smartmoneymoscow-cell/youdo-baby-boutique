@@ -1,11 +1,19 @@
 import { X, Minus, Plus, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { useShop, useUI } from "@/lib/store";
 import { PRODUCTS, formatPrice } from "@/lib/products";
+import { useAuth } from "@/lib/auth";
+import { useOrders } from "@/lib/orders";
 
 export function CartDrawer() {
   const { cartOpen, setCartOpen } = useUI();
   const { cart, updateQty, removeFromCart, clearCart } = useShop();
+  const user = useAuth((s) => s.user);
+  const addBonuses = useAuth((s) => s.addBonuses);
+  const createOrder = useOrders((s) => s.createOrder);
+  const navigate = useNavigate();
 
   const items = cart.map((c, idx) => ({
     ...c,
@@ -13,6 +21,36 @@ export function CartDrawer() {
     product: PRODUCTS.find((p) => p.id === c.productId)!,
   }));
   const subtotal = items.reduce((sum, it) => sum + it.product.price * it.qty, 0);
+  const bonusesEarned = Math.round(subtotal * 0.05);
+
+  const checkout = () => {
+    if (!user) {
+      toast.error("Войдите, чтобы оформить заказ");
+      return;
+    }
+    if (items.length === 0) return;
+    const order = createOrder({
+      items: items.map((it) => ({
+        productId: it.product.id,
+        name: it.product.name,
+        image: it.product.image,
+        price: it.product.price,
+        qty: it.qty,
+        color: it.color,
+        size: it.size,
+      })),
+      total: subtotal,
+      bonusesEarned,
+      bonusesUsed: 0,
+      customer: user.name,
+      address: "—",
+    });
+    addBonuses(bonusesEarned);
+    clearCart();
+    setCartOpen(false);
+    toast.success(`Заказ ${order.id} оформлен! Начислено ${bonusesEarned} ₽ бонусов`);
+    navigate({ to: "/account" });
+  };
 
   return (
     <AnimatePresence>
@@ -132,7 +170,7 @@ export function CartDrawer() {
             </div>
 
             {items.length > 0 && (
-              <div className="border-t border-border p-6 space-y-4 bg-gradient-soft">
+              <div className="border-t border-border p-6 space-y-3 bg-gradient-soft">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Промежуточный итог</span>
                   <span className="text-lg font-extrabold text-primary">{formatPrice(subtotal)}</span>
@@ -141,8 +179,15 @@ export function CartDrawer() {
                   <span>Доставка</span>
                   <span className="text-primary font-semibold">Бесплатно</span>
                 </div>
-                <button className="w-full h-13 py-3.5 rounded-full bg-gradient-primary text-primary-foreground font-semibold shadow-soft hover:shadow-float transition-all inline-flex items-center justify-center gap-2">
-                  Оформить заказ <ArrowRight className="size-4" />
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Бонусы за покупку</span>
+                  <span className="font-bold text-primary-soft">+{bonusesEarned} ₽</span>
+                </div>
+                <button
+                  onClick={checkout}
+                  className="w-full h-13 py-3.5 rounded-full bg-gradient-primary text-primary-foreground font-semibold shadow-soft hover:shadow-float transition-all inline-flex items-center justify-center gap-2"
+                >
+                  {user ? "Оформить заказ" : "Войдите, чтобы оформить"} <ArrowRight className="size-4" />
                 </button>
                 <div className="flex justify-between text-xs">
                   <button onClick={() => setCartOpen(false)} className="text-muted-foreground hover:text-primary underline underline-offset-2">

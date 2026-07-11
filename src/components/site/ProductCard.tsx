@@ -1,8 +1,8 @@
-import { Heart, Plus, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star } from "lucide-react";
 import { motion } from "motion/react";
+import { useRef } from "react";
 import { useShop, useUI } from "@/lib/store";
 import { formatPrice, type Product } from "@/lib/products";
-import { useRef } from "react";
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart, favorites, toggleFavorite } = useShop();
@@ -12,7 +12,6 @@ export function ProductCard({ product }: { product: Product }) {
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Fly-to-cart animation
     const rect = cardRef.current?.getBoundingClientRect();
     const cartBtn = document.getElementById("cart-button")?.getBoundingClientRect();
     if (rect && cartBtn) {
@@ -41,10 +40,10 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <motion.div
       ref={cardRef}
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 300, damping: 24 }}
       onClick={() => setActiveProduct(product.id)}
-      className="group relative flex flex-col rounded-3xl bg-card border border-border/70 overflow-hidden cursor-pointer hover:shadow-card transition-shadow"
+      className="group relative flex flex-col rounded-3xl bg-card border border-border/70 overflow-hidden cursor-pointer hover:shadow-card hover:border-primary/30 transition-all h-full"
     >
       <div className="relative aspect-square overflow-hidden bg-gradient-soft">
         <img
@@ -86,29 +85,21 @@ export function ProductCard({ product }: { product: Product }) {
             }`}
           />
         </button>
-
-        <button
-          onClick={handleAdd}
-          aria-label="В корзину"
-          className="absolute bottom-3 right-3 size-11 grid place-items-center rounded-full bg-gradient-primary text-primary-foreground shadow-soft hover:shadow-float translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all"
-        >
-          <Plus className="size-5" />
-        </button>
       </div>
 
-      <div className="flex flex-col gap-1.5 p-4">
+      <div className="flex flex-col flex-1 gap-1.5 p-4">
         <div className="flex items-center justify-between text-[11px]">
-          <span className="uppercase tracking-wider text-muted-foreground font-semibold">
+          <span className="uppercase tracking-wider text-muted-foreground font-semibold truncate">
             {product.brand}
           </span>
-          <span className="inline-flex items-center gap-0.5 text-foreground/70">
+          <span className="inline-flex items-center gap-0.5 text-foreground/70 shrink-0">
             <Star className="size-3 fill-cream stroke-primary/60" /> {product.rating}
           </span>
         </div>
         <h3 className="text-[15px] font-semibold text-foreground leading-tight line-clamp-2 min-h-[2.5em]">
           {product.name}
         </h3>
-        <div className="mt-1 flex items-baseline gap-2">
+        <div className="mt-auto pt-2 flex items-baseline gap-2">
           <span className="text-lg font-extrabold text-primary">{formatPrice(product.price)}</span>
           {product.oldPrice && (
             <span className="text-xs text-muted-foreground line-through">
@@ -118,9 +109,9 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <button
           onClick={handleAdd}
-          className="md:hidden mt-2 h-10 rounded-full bg-gradient-primary text-primary-foreground text-sm font-semibold"
+          className="mt-3 h-11 rounded-full bg-gradient-primary text-primary-foreground text-sm font-semibold inline-flex items-center justify-center gap-2 shadow-sm hover:shadow-soft transition-all hover:-translate-y-0.5"
         >
-          В корзину
+          <ShoppingBag className="size-4" /> В корзину
         </button>
       </div>
     </motion.div>
