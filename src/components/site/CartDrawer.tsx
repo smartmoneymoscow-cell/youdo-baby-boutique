@@ -1,11 +1,19 @@
 import { X, Minus, Plus, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { useShop, useUI } from "@/lib/store";
 import { PRODUCTS, formatPrice } from "@/lib/products";
+import { useAuth } from "@/lib/auth";
+import { useOrders } from "@/lib/orders";
 
 export function CartDrawer() {
   const { cartOpen, setCartOpen } = useUI();
   const { cart, updateQty, removeFromCart, clearCart } = useShop();
+  const user = useAuth((s) => s.user);
+  const addBonuses = useAuth((s) => s.addBonuses);
+  const createOrder = useOrders((s) => s.createOrder);
+  const navigate = useNavigate();
 
   const items = cart.map((c, idx) => ({
     ...c,
@@ -13,6 +21,36 @@ export function CartDrawer() {
     product: PRODUCTS.find((p) => p.id === c.productId)!,
   }));
   const subtotal = items.reduce((sum, it) => sum + it.product.price * it.qty, 0);
+  const bonusesEarned = Math.round(subtotal * 0.05);
+
+  const checkout = () => {
+    if (!user) {
+      toast.error("Войдите, чтобы оформить заказ");
+      return;
+    }
+    if (items.length === 0) return;
+    const order = createOrder({
+      items: items.map((it) => ({
+        productId: it.product.id,
+        name: it.product.name,
+        image: it.product.image,
+        price: it.product.price,
+        qty: it.qty,
+        color: it.color,
+        size: it.size,
+      })),
+      total: subtotal,
+      bonusesEarned,
+      bonusesUsed: 0,
+      customer: user.name,
+      address: "—",
+    });
+    addBonuses(bonusesEarned);
+    clearCart();
+    setCartOpen(false);
+    toast.success(`Заказ ${order.id} оформлен! Начислено ${bonusesEarned} ₽ бонусов`);
+    navigate({ to: "/account" });
+  };
 
   return (
     <AnimatePresence>
