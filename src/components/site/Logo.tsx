@@ -1,6 +1,6 @@
 export function Logo({ size = 40, showText = true }: { size?: number; showText?: boolean }) {
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-2.5 shrink-0">
       <svg
         width={size}
         height={size}

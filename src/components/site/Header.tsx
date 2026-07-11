@@ -48,8 +48,8 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20 min-w-0">
-          <button className="lg:hidden text-foreground" aria-label="Меню" onClick={() => setMobileNav(true)}>
+        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20">
+          <button className="lg:hidden text-foreground shrink-0" aria-label="Меню" onClick={() => setMobileNav(true)}>
             <Menu className="size-6" />
           </button>
 
@@ -70,10 +70,10 @@ export function Header() {
             )}
           </nav>
 
-          <div className="hidden md:flex flex-1 max-w-xl mx-auto min-w-0">
+          <div className="hidden md:flex flex-1 min-w-0 max-w-xl mx-auto">
             <Link to="/catalog" className="relative w-full">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <div className="w-full h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground">
+              <div className="w-full h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
                 Найти коляску, кроватку, игрушку…
               </div>
             </Link>
