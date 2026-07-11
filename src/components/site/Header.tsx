@@ -48,7 +48,7 @@ export function Header() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20">
+        <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-10 h-16 md:h-20 min-w-0">
           <button className="lg:hidden text-foreground" aria-label="Меню" onClick={() => setMobileNav(true)}>
             <Menu className="size-6" />
           </button>
@@ -60,12 +60,12 @@ export function Header() {
             <Logo size={36} showText={false} />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7 ml-4 text-sm font-medium text-foreground/80 min-w-0">
+          <nav className="hidden lg:flex items-center gap-7 ml-4 text-sm font-medium text-foreground/80 shrink-0">
             {navLinks.map((l) =>
               l.hash ? (
-                <a key={l.label} href={l.hash} className="hover:text-primary transition-colors">{l.label}</a>
+                <a key={l.label} href={l.hash} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</a>
               ) : (
-                <Link key={l.label} to={l.to} className="hover:text-primary transition-colors">{l.label}</Link>
+                <Link key={l.label} to={l.to} className="hover:text-primary transition-colors whitespace-nowrap">{l.label}</Link>
               ),
             )}
           </nav>
@@ -79,7 +79,7 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2 justify-end">
+          <div className="flex items-center gap-1 md:gap-2 justify-end shrink-0">
             <button
               onClick={() => setFavOpen(true)}
               className="relative size-10 md:size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
@@ -120,7 +120,9 @@ export function Header() {
               )}
             </button>
 
-            <UserMenu onOpenLogin={() => setLoginOpen(true)} />
+            <div className="shrink-0">
+              <UserMenu onOpenLogin={() => setLoginOpen(true)} />
+            </div>
           </div>
         </div>
       </header>

@@ -23,7 +23,7 @@ export function UserMenu({ onOpenLogin }: { onOpenLogin: () => void }) {
       <>
         <button
           onClick={onOpenLogin}
-          className="hidden md:inline-flex items-center gap-2 h-11 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold text-sm shadow-soft hover:shadow-float transition-shadow"
+          className="hidden md:inline-flex items-center gap-2 h-11 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold text-sm shadow-soft hover:shadow-float transition-shadow whitespace-nowrap"
         >
           <User className="size-4" /> Войти
         </button>
@@ -44,7 +44,7 @@ export function UserMenu({ onOpenLogin }: { onOpenLogin: () => void }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 h-11 pl-1.5 pr-3.5 rounded-full bg-card border border-border hover:border-primary/40 transition-colors"
+        className="flex items-center gap-2 h-11 pl-1.5 pr-3.5 rounded-full bg-card border border-border hover:border-primary/40 transition-colors whitespace-nowrap"
       >
         <div className="size-8 rounded-full bg-gradient-primary grid place-items-center text-primary-foreground text-xs font-bold">
           {initials}
