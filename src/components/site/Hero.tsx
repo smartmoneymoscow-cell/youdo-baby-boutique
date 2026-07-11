@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { ArrowRight, Sparkles, Truck, ShieldCheck, HeartHandshake } from "lucide-react";
 import heroFamily from "@/assets/hero-family.jpg";
 import stroller from "@/assets/product-stroller.jpg";
@@ -75,51 +75,57 @@ export function Hero() {
 
       <div className="relative px-4 md:px-6 lg:px-10 pt-6 pb-14 md:pt-10 md:pb-24">
         <div className="mx-auto max-w-7xl grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-14 items-center">
-          {/* TEXT COLUMN — fixed min-height to keep hero from jumping between slides */}
-          <div className="order-2 lg:order-1 min-h-[420px] md:min-h-[460px] lg:min-h-[520px] flex flex-col">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5 }}
-                className="flex-1"
-              >
-                <div className="inline-flex items-center gap-2 rounded-full bg-background/70 backdrop-blur-md border border-border px-3.5 py-1.5 text-xs font-semibold text-primary shadow-sm">
-                  <Sparkles className="size-3.5" /> {s.tag}
-                </div>
-                <h1 className="mt-5 text-[36px] leading-[1.05] md:text-6xl lg:text-7xl font-extrabold text-primary tracking-tight">
-                  {s.title}
-                  <span className="block font-serif italic font-medium text-primary-soft mt-1">
-                    {s.accent}
-                  </span>
-                </h1>
-                <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
-                  {s.subtitle}
-                </p>
+          {/* TEXT COLUMN — fixed height so the section never jumps */}
+          <div className="order-2 lg:order-1 h-[420px] md:h-[460px] lg:h-[520px] flex flex-col">
+            {/* Slide content: absolutely positioned so height never changes */}
+            <div className="relative flex-1">
+              {slides.map((slide, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={false}
+                  animate={{
+                    opacity: idx === i ? 1 : 0,
+                    y: idx === i ? 0 : 12,
+                  }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
+                  style={{ pointerEvents: idx === i ? "auto" : "none" }}
+                >
+                  <div className="inline-flex items-center gap-2 rounded-full bg-background/70 backdrop-blur-md border border-border px-3.5 py-1.5 text-xs font-semibold text-primary shadow-sm">
+                    <Sparkles className="size-3.5" /> {slide.tag}
+                  </div>
+                  <h1 className="mt-5 text-[36px] leading-[1.05] md:text-6xl lg:text-7xl font-extrabold text-primary tracking-tight">
+                    {slide.title}
+                    <span className="block font-serif italic font-medium text-primary-soft mt-1">
+                      {slide.accent}
+                    </span>
+                  </h1>
+                  <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+                    {slide.subtitle}
+                  </p>
 
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="h-14 px-7 rounded-full bg-gradient-primary text-base font-semibold shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all"
-                  >
-                    <Link to={s.to}>
-                      {s.cta} <ArrowRight className="ml-1 size-5" />
-                    </Link>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="h-14 px-7 rounded-full bg-background/60 backdrop-blur-md text-base font-semibold border-border/80 hover:bg-background"
-                  >
-                    <a href="#bestsellers">Бестселлеры</a>
-                  </Button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="h-14 px-7 rounded-full bg-gradient-primary text-base font-semibold shadow-soft hover:shadow-float hover:-translate-y-0.5 transition-all"
+                    >
+                      <Link to={slide.to}>
+                        {slide.cta} <ArrowRight className="ml-1 size-5" />
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="h-14 px-7 rounded-full bg-background/60 backdrop-blur-md text-base font-semibold border-border/80 hover:bg-background"
+                    >
+                      <a href="#bestsellers">Бестселлеры</a>
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
             <div className="mt-8 flex gap-2 items-center">
               {slides.map((_, idx) => (
@@ -144,18 +150,20 @@ export function Hero() {
           {/* IMAGE COLUMN — fixed square aspect so it never shifts height */}
           <div className="order-1 lg:order-2 relative">
             <div className="relative w-full max-w-[520px] mx-auto aspect-square">
-              <AnimatePresence mode="wait">
+              {slides.map((slide, idx) => (
                 <motion.img
-                  key={i}
-                  src={s.image}
+                  key={idx}
+                  src={slide.image}
                   alt=""
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.02 }}
+                  initial={false}
+                  animate={{
+                    opacity: idx === i ? 1 : 0,
+                    scale: idx === i ? 1 : 0.98,
+                  }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 size-full object-cover rounded-[42px] shadow-float border-8 border-background"
                 />
-              </AnimatePresence>
+              ))}
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
