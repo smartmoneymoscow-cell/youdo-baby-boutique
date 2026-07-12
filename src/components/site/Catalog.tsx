@@ -16,13 +16,11 @@ const SORTS: { key: SortKey; label: string }[] = [
 ];
 
 export function Catalog() {
-  const [query, setQuery] = useState("");
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("popular");
 
   const filtered = useMemo(() => {
     let list = PRODUCTS.filter((p) => {
-      if (query && !`${p.name} ${p.brand}`.toLowerCase().includes(query.toLowerCase())) return false;
       if (activeCat && p.category !== activeCat) return false;
       return true;
     });
@@ -31,7 +29,8 @@ export function Catalog() {
     if (sort === "new") list = [...list].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
     if (sort === "popular") list = [...list].sort((a, b) => b.reviews - a.reviews);
     return list.slice(0, 8);
-  }, [query, activeCat, sort]);
+  }, [activeCat, sort]);
+
 
   return (
     <section id="catalog" className="relative px-4 md:px-6 lg:px-10 py-16 md:py-24">
