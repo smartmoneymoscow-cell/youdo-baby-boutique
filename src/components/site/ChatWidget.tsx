@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
 import { useUI } from "@/lib/store";
 import bearLogo from "@/assets/bear-logo.png.asset.json";
 
