@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Search, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { CATEGORIES, PRODUCTS } from "@/lib/products";
 import { ProductCard } from "./ProductCard";
+
 
 type SortKey = "popular" | "price-asc" | "price-desc" | "new";
 
