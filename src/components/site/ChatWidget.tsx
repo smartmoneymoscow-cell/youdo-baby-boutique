@@ -108,10 +108,17 @@ export function ChatWidget() {
                   key={i}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                  className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
+                  {m.role === "bot" && (
+                    <img
+                      src={bearLogo.url}
+                      alt=""
+                      className="size-8 rounded-full object-cover shrink-0 border border-border shadow-sm"
+                    />
+                  )}
                   <div
-                    className={`max-w-[85%] px-4 py-2.5 text-sm leading-snug rounded-2xl ${
+                    className={`max-w-[80%] px-4 py-2.5 text-sm leading-snug rounded-2xl ${
                       m.role === "user"
                         ? "bg-primary text-primary-foreground rounded-br-md"
                         : "bg-background text-foreground border border-border rounded-bl-md"
@@ -121,6 +128,7 @@ export function ChatWidget() {
                   </div>
                 </motion.div>
               ))}
+
 
               {msgs.length <= 1 && (
                 <div className="pt-2 flex flex-wrap gap-2">
