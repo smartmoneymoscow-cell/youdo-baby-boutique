@@ -48,11 +48,11 @@ export function Header() {
           </div>
         </div>
 
-        {/* Desktop header — 3-column grid: logo+nav | search | actions */}
-        <div style={{ display: 'none' }} className="lg:!grid items-center grid-cols-[auto_1fr_auto] gap-6 px-10 h-20">
-          <div className="flex items-center gap-6">
+        {/* Desktop header — 3-column grid: logo+nav | spacer | actions */}
+        <div className="hidden lg:grid items-center grid-cols-[auto_1fr_auto] gap-6 px-10 h-20">
+          <div className="flex items-center gap-8 min-w-0">
             <Link to="/" className="shrink-0">
-              <Logo size={40} />
+              <Logo size={44} />
             </Link>
             <nav className="flex items-center gap-6 text-sm font-medium text-foreground/80">
               {navLinks.map((l) =>
@@ -65,16 +65,9 @@ export function Header() {
             </nav>
           </div>
 
-          <div className="min-w-0">
-            <Link to="/catalog" className="relative block">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <div className="w-full max-w-xl mx-auto h-11 pl-11 pr-4 rounded-full bg-secondary/70 border border-transparent flex items-center text-sm text-muted-foreground truncate">
-                Найти коляску, кроватку, игрушку…
-              </div>
-            </Link>
-          </div>
+          <div />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setFavOpen(true)}
               className="relative size-11 grid place-items-center rounded-full hover:bg-secondary transition-colors"
@@ -120,6 +113,7 @@ export function Header() {
             </div>
           </div>
         </div>
+
 
         {/* Mobile header — simple flex */}
         <div className="flex lg:hidden items-center gap-3 px-4 h-16">
