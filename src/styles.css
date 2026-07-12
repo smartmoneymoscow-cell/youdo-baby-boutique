@@ -149,3 +149,13 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+@keyframes brands-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-brands-marquee {
+  animation: brands-marquee 42s linear infinite;
+}
+.animate-brands-marquee:hover { animation-play-state: paused; }
+
