@@ -205,7 +205,7 @@ function Dashboard() {
   );
 }
 
-function ProductsTab() {
+function ProductsTab({ onGoIO }: { onGoIO: () => void }) {
   const products = useAdminProducts((s) => s.products);
   const addProduct = useAdminProducts((s) => s.addProduct);
   const updateProduct = useAdminProducts((s) => s.updateProduct);
@@ -243,20 +243,44 @@ function ProductsTab() {
 
   return (
     <div className="space-y-4">
+      {/* Stat + primary actions row */}
+      <div className="grid md:grid-cols-[1fr_auto] gap-3 items-center rounded-3xl bg-card border border-border p-4">
+        <div className="min-w-0">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">В базе</div>
+          <div className="text-2xl font-extrabold text-primary">{products.length} товаров</div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={startNew}
+            className="h-11 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold inline-flex items-center gap-2 shadow-soft"
+          >
+            <Plus className="size-4" /> Новый товар
+          </button>
+          <button
+            onClick={onGoIO}
+            className="h-11 px-5 rounded-full bg-secondary hover:bg-secondary/80 text-primary font-semibold inline-flex items-center gap-2 border border-border"
+          >
+            <Download className="size-4" /> Экспорт CSV
+          </button>
+          <button
+            onClick={onGoIO}
+            className="h-11 px-5 rounded-full bg-secondary hover:bg-secondary/80 text-primary font-semibold inline-flex items-center gap-2 border border-border"
+          >
+            <Upload className="size-4" /> Импорт CSV
+          </button>
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-center gap-3">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Поиск по названию или бренду"
-          className="flex-1 min-w-[220px] h-12 px-4 rounded-full bg-secondary/60 border border-transparent focus:border-primary/40 focus:bg-background outline-hidden text-sm"
+          className="flex-1 min-w-[220px] h-12 px-4 rounded-full bg-background border border-border focus:border-primary/40 outline-hidden text-sm"
         />
-        <button
-          onClick={startNew}
-          className="h-12 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold inline-flex items-center gap-2 shadow-soft"
-        >
-          <Plus className="size-4" /> Добавить товар
-        </button>
       </div>
+
+
 
       <div className="rounded-3xl bg-card border border-border overflow-hidden">
         <div className="overflow-x-auto">
