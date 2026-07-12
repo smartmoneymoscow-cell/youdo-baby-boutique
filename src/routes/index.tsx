@@ -3,6 +3,8 @@ import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Bestsellers } from "@/components/site/Bestsellers";
 import { Catalog } from "@/components/site/Catalog";
+import { BrandsMarquee } from "@/components/site/BrandsMarquee";
+
 import { Footer } from "@/components/site/Footer";
 import { CartDrawer } from "@/components/site/CartDrawer";
 import { FavoritesDrawer } from "@/components/site/FavoritesDrawer";
@@ -39,8 +41,10 @@ function Index() {
         <Hero />
         <Bestsellers />
         <Catalog />
+        <BrandsMarquee />
       </main>
       <Footer />
+
       <CartDrawer />
       <FavoritesDrawer />
       <ProductDialog />

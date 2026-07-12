@@ -51,34 +51,65 @@ function AdminPage() {
   if (!user || user.role !== "admin") return null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-secondary/40">
       <Header />
-      <main className="px-4 md:px-6 lg:px-10 py-8 md:py-12">
-        <div className="mx-auto max-w-[1400px]">
-          <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
-            <Link to="/" className="hover:text-primary inline-flex items-center gap-1"><Home className="size-3.5" /> Главная</Link>
-            <ChevronRight className="size-3.5" />
-            <span className="text-foreground font-medium">Админка</span>
-          </nav>
+      <main className="px-4 md:px-6 lg:px-8 py-6 md:py-8">
+        <div className="mx-auto max-w-[1500px]">
+          <div className="grid lg:grid-cols-[260px_1fr] gap-6">
+            {/* Sidebar */}
+            <aside className="lg:sticky lg:top-24 h-max rounded-3xl bg-primary text-primary-foreground p-5 shadow-float">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="size-10 rounded-2xl bg-white/15 grid place-items-center">
+                  <LayoutDashboard className="size-5" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[10px] uppercase tracking-widest opacity-70">Admin panel</div>
+                  <div className="text-base font-extrabold truncate">YouDo Console</div>
+                </div>
+              </div>
 
-          <div className="flex items-center justify-between gap-4 mb-8">
-            <div>
-              <div className="text-xs uppercase tracking-[0.2em] text-primary-soft font-semibold">Панель управления</div>
-              <h1 className="mt-2 text-3xl md:text-4xl font-extrabold text-primary tracking-tight">Админка YouDo</h1>
-            </div>
+              <nav className="flex lg:flex-col gap-1 overflow-x-auto -mx-1 px-1">
+                <SideTab active={tab === "dashboard"} onClick={() => setTab("dashboard")} icon={LayoutDashboard}>Статистика</SideTab>
+                <SideTab active={tab === "products"} onClick={() => setTab("products")} icon={Package}>База товаров</SideTab>
+                <SideTab active={tab === "orders"} onClick={() => setTab("orders")} icon={ShoppingCart}>Заказы</SideTab>
+                <SideTab active={tab === "io"} onClick={() => setTab("io")} icon={Download}>Импорт / Экспорт</SideTab>
+              </nav>
+
+              <div className="mt-6 pt-5 border-t border-white/15">
+                <div className="text-[11px] uppercase tracking-widest opacity-70">Вы вошли как</div>
+                <div className="mt-1 text-sm font-bold truncate">{user.name}</div>
+                <div className="text-xs opacity-80">Администратор</div>
+              </div>
+            </aside>
+
+            <section className="min-w-0">
+              <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
+                <Link to="/" className="hover:text-primary inline-flex items-center gap-1"><Home className="size-3.5" /> Главная</Link>
+                <ChevronRight className="size-3.5" />
+                <span className="text-foreground font-medium">
+                  {tab === "dashboard" && "Статистика"}
+                  {tab === "products" && "База товаров"}
+                  {tab === "orders" && "Заказы"}
+                  {tab === "io" && "Импорт / Экспорт"}
+                </span>
+              </nav>
+
+              <div className="mb-6">
+                <div className="text-xs uppercase tracking-[0.2em] text-primary-soft font-semibold">Панель управления</div>
+                <h1 className="mt-1.5 text-2xl md:text-3xl font-extrabold text-primary tracking-tight">
+                  {tab === "dashboard" && "Статистика магазина"}
+                  {tab === "products" && "База товаров и карточки"}
+                  {tab === "orders" && "Заказы клиентов"}
+                  {tab === "io" && "Импорт и экспорт базы"}
+                </h1>
+              </div>
+
+              {tab === "dashboard" && <Dashboard />}
+              {tab === "products" && <ProductsTab onGoIO={() => setTab("io")} />}
+              {tab === "orders" && <OrdersTab />}
+              {tab === "io" && <IOTab />}
+            </section>
           </div>
-
-          <div className="flex flex-wrap gap-2 mb-6">
-            <Tab active={tab === "dashboard"} onClick={() => setTab("dashboard")} icon={LayoutDashboard}>Статистика</Tab>
-            <Tab active={tab === "products"} onClick={() => setTab("products")} icon={Package}>Товары</Tab>
-            <Tab active={tab === "orders"} onClick={() => setTab("orders")} icon={ShoppingCart}>Заказы</Tab>
-            <Tab active={tab === "io"} onClick={() => setTab("io")} icon={Download}>Импорт / Экспорт</Tab>
-          </div>
-
-          {tab === "dashboard" && <Dashboard />}
-          {tab === "products" && <ProductsTab />}
-          {tab === "orders" && <OrdersTab />}
-          {tab === "io" && <IOTab />}
         </div>
       </main>
       <Footer />
@@ -86,6 +117,32 @@ function AdminPage() {
     </div>
   );
 }
+
+function SideTab({
+  active,
+  onClick,
+  icon: Icon,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ElementType;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`shrink-0 lg:w-full flex items-center gap-2.5 px-3.5 h-11 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
+        active
+          ? "bg-white text-primary shadow-sm"
+          : "text-primary-foreground/85 hover:bg-white/10"
+      }`}
+    >
+      <Icon className="size-4" /> {children}
+    </button>
+  );
+}
+
 
 function Dashboard() {
   const orders = useOrders((s) => s.orders);
@@ -148,7 +205,7 @@ function Dashboard() {
   );
 }
 
-function ProductsTab() {
+function ProductsTab({ onGoIO }: { onGoIO: () => void }) {
   const products = useAdminProducts((s) => s.products);
   const addProduct = useAdminProducts((s) => s.addProduct);
   const updateProduct = useAdminProducts((s) => s.updateProduct);
@@ -186,20 +243,44 @@ function ProductsTab() {
 
   return (
     <div className="space-y-4">
+      {/* Stat + primary actions row */}
+      <div className="grid md:grid-cols-[1fr_auto] gap-3 items-center rounded-3xl bg-card border border-border p-4">
+        <div className="min-w-0">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">В базе</div>
+          <div className="text-2xl font-extrabold text-primary">{products.length} товаров</div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={startNew}
+            className="h-11 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold inline-flex items-center gap-2 shadow-soft"
+          >
+            <Plus className="size-4" /> Новый товар
+          </button>
+          <button
+            onClick={onGoIO}
+            className="h-11 px-5 rounded-full bg-secondary hover:bg-secondary/80 text-primary font-semibold inline-flex items-center gap-2 border border-border"
+          >
+            <Download className="size-4" /> Экспорт CSV
+          </button>
+          <button
+            onClick={onGoIO}
+            className="h-11 px-5 rounded-full bg-secondary hover:bg-secondary/80 text-primary font-semibold inline-flex items-center gap-2 border border-border"
+          >
+            <Upload className="size-4" /> Импорт CSV
+          </button>
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-center gap-3">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Поиск по названию или бренду"
-          className="flex-1 min-w-[220px] h-12 px-4 rounded-full bg-secondary/60 border border-transparent focus:border-primary/40 focus:bg-background outline-hidden text-sm"
+          className="flex-1 min-w-[220px] h-12 px-4 rounded-full bg-background border border-border focus:border-primary/40 outline-hidden text-sm"
         />
-        <button
-          onClick={startNew}
-          className="h-12 px-5 rounded-full bg-gradient-primary text-primary-foreground font-semibold inline-flex items-center gap-2 shadow-soft"
-        >
-          <Plus className="size-4" /> Добавить товар
-        </button>
       </div>
+
+
 
       <div className="rounded-3xl bg-card border border-border overflow-hidden">
         <div className="overflow-x-auto">
