@@ -41,8 +41,10 @@ function Index() {
         <Hero />
         <Bestsellers />
         <Catalog />
+        <BrandsMarquee />
       </main>
       <Footer />
+
       <CartDrawer />
       <FavoritesDrawer />
       <ProductDialog />
