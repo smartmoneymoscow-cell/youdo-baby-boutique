@@ -42,27 +42,40 @@ export function ChatWidget() {
     <>
       <button
         onClick={() => setChatOpen(!chatOpen)}
-        className="fixed z-40 bottom-5 right-5 md:bottom-8 md:right-8 size-14 md:size-16 rounded-full bg-gradient-primary text-primary-foreground shadow-float grid place-items-center hover:scale-105 transition-transform"
+        className="fixed z-40 bottom-5 right-5 md:bottom-8 md:right-8 size-16 md:size-[68px] rounded-full bg-primary text-primary-foreground shadow-float overflow-hidden hover:scale-105 transition-transform ring-4 ring-background"
         aria-label="Открыть чат"
       >
         <AnimatePresence mode="wait">
           {chatOpen ? (
-            <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+            <motion.div
+              key="x"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              className="size-full grid place-items-center bg-gradient-primary"
+            >
               <X className="size-6" />
             </motion.div>
           ) : (
-            <motion.div key="msg" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
-              <MessageCircle className="size-6" />
-            </motion.div>
+            <motion.img
+              key="bear"
+              src={bearLogo.url}
+              alt=""
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="size-full object-cover"
+            />
           )}
         </AnimatePresence>
         {!chatOpen && (
           <>
             <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping opacity-30" />
-            <span className="absolute -top-1 -right-1 size-3 rounded-full bg-cream border-2 border-background" />
+            <span className="absolute -top-0.5 -right-0.5 size-3.5 rounded-full bg-green-400 border-2 border-background" />
           </>
         )}
       </button>
+
 
       <AnimatePresence>
         {chatOpen && (
