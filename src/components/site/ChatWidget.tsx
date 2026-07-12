@@ -76,16 +76,17 @@ export function ChatWidget() {
             <div className="p-5 bg-gradient-primary text-primary-foreground relative">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent_60%)]" />
               <div className="relative flex items-center gap-3">
-                <div className="size-11 rounded-2xl bg-white/15 backdrop-blur grid place-items-center border border-white/20">
-                  <Sparkles className="size-5" />
+                <div className="size-12 rounded-2xl overflow-hidden bg-white/15 backdrop-blur border border-white/25 shrink-0">
+                  <img src={bearLogo.url} alt="" className="size-full object-cover" />
                 </div>
-                <div>
-                  <div className="font-extrabold text-lg leading-tight">ИИ-консультант</div>
+                <div className="min-w-0">
+                  <div className="font-extrabold text-lg leading-tight truncate">Мишка YouDo</div>
                   <div className="text-xs opacity-90 inline-flex items-center gap-1.5">
-                    <span className="size-1.5 rounded-full bg-green-400" /> Онлайн · Заказ с YouDo
+                    <span className="size-1.5 rounded-full bg-green-400" /> Онлайн · ИИ-консультант
                   </div>
                 </div>
               </div>
+
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-soft">
