@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Heart, Search, ShoppingBag, Menu, Phone, X } from "lucide-react";
+import { Heart, ShoppingBag, Menu, Phone, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useShop, useUI } from "@/lib/store";
 import { Logo } from "./Logo";
