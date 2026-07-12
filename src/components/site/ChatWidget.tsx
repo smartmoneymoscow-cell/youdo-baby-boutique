@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send } from "lucide-react";
 import { useUI } from "@/lib/store";
+import bearLogo from "@/assets/bear-logo.png.asset.json";
+
 
 const suggestions = [
   "Подобрать коляску по возрасту",
