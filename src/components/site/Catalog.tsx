@@ -53,26 +53,22 @@ export function Catalog() {
           </Link>
         </div>
 
-        {/* Toolbar: search + sort + category chips */}
-        <div className="rounded-3xl bg-card border border-border/70 p-4 md:p-5 mb-8 shadow-sm">
-          <div className="flex flex-col lg:flex-row gap-3 items-stretch">
-            <div className="relative flex-1 min-w-0">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-muted-foreground" />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Поиск по названию или бренду"
-                className="w-full h-13 py-3.5 pl-12 pr-4 rounded-2xl bg-secondary/60 border border-transparent focus:border-primary/40 focus:bg-background outline-hidden text-[15px] transition-all"
-              />
+        {/* Toolbar: quick category chips + sort in same row */}
+        <div className="rounded-3xl bg-card border border-border/70 p-3 md:p-4 mb-8 shadow-sm">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+            <div className="flex-1 min-w-0 flex flex-wrap gap-2">
+              <Chip active={!activeCat} onClick={() => setActiveCat(null)}>Все</Chip>
+              {CATEGORIES.map((c) => (
+                <Chip key={c} active={activeCat === c} onClick={() => setActiveCat(activeCat === c ? null : c)}>
+                  {c}
+                </Chip>
+              ))}
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground shrink-0">
-                Сортировка
-              </label>
+            <div className="shrink-0 relative">
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
-                className="h-13 py-3.5 pl-4 pr-9 rounded-2xl bg-secondary/60 border border-transparent focus:border-primary/40 focus:bg-background text-[14px] font-medium outline-hidden transition-all"
+                className="appearance-none h-11 min-w-[210px] px-6 rounded-full bg-secondary/70 border border-transparent focus:border-primary/40 focus:bg-background text-[13px] font-semibold text-primary outline-hidden transition-all text-center cursor-pointer"
               >
                 {SORTS.map((s) => (
                   <option key={s.key} value={s.key}>{s.label}</option>
@@ -80,15 +76,8 @@ export function Catalog() {
               </select>
             </div>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Chip active={!activeCat} onClick={() => setActiveCat(null)}>Все</Chip>
-            {CATEGORIES.map((c) => (
-              <Chip key={c} active={activeCat === c} onClick={() => setActiveCat(activeCat === c ? null : c)}>
-                {c}
-              </Chip>
-            ))}
-          </div>
         </div>
+
 
         <motion.div
           initial="hidden"
